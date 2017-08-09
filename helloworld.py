@@ -1,1 +1,2 @@
-print "Hello World"
+
+print 'what\\\\\'s up? //\\\\hello world'
