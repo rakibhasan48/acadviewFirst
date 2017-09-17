@@ -7,8 +7,8 @@ def options() :
                                     "2) Start Chat Server\n"
                                     "3) Join a Chat Server\n"
                                     "4) See Friends List\n"
-                                    "5) Send a secret message\n" 
-                                    "6) Read a secret message\n" 
+                                    "5) Send a secret message (Server has to be running.)\n" 
+                                    "6) Receive a secret message\n" 
                                     # "8) Read chats from a user\n" 
                                     "7) Close application\n"))
 
@@ -62,7 +62,7 @@ def options() :
 
                 msg = recvSecretMsg(IP_address, Port)
 
-                print "\n The message is : {}".format(msg)
+                print "\n The message is : {}\n".format(msg)
 
         except ValueError :
             print "Enter a number idiot -_-"

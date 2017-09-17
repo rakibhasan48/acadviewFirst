@@ -9,16 +9,24 @@ def sendSecretMsg(IP_address, Port) :
     Steganography.encode(org_img, op_path, msg)
 
     ADDR = (IP_address, Port)
-    BUFSIZE = 4096
-    imagefile = "output.jpg"
+    imagefile = open('output.jpg', 'rb')
 
-    bytes = open(imagefile).read()
+    bytes = imagefile.read(1024)
 
     serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     serv.connect(ADDR)
-    serv.send(bytes)
+    print "Sending..."
+
+    while bytes :
+
+        serv.send(bytes)
+        bytes = imagefile.read(1024)
+
+    imagefile.close()
 
     print "Image sent\n"
+
+    serv.shutdown(socket.SHUT_WR)
 
     serv.close()
 
@@ -32,22 +40,25 @@ def recvSecretMsg (IP_address, Port) :
     server.listen(5)
     print 'Listening for client...'
 
+    myfile = open('secret.jpg', 'wb')
+
     while True:
         conn, addr = server.accept()
         print 'client connected ... ', addr
-        myfile = open('secret.jpg', 'w')
 
-        while True :
-            data = conn.recv(4096)
+        data = conn.recv(1024)
 
-            if not data: break
+        print 'Receiving file ....'
+
+        while data :
             myfile.write(data)
-            print 'writing file ....'
+            data = conn.recv(1024)
 
-    myfile.close()
-    print "Finished writing."
+        myfile.close()
+        print "Finished writing."
 
-    conn.close()
+        conn.close()
+        break
 
     secret_text = Steganography.decode("secret.jpg")
 
